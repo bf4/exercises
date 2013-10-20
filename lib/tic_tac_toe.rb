@@ -16,6 +16,12 @@ class TicTacToe
       end
     end
 
+    def space(coords)
+      row = coords.fetch(:row)
+      column = coords.fetch(:column)
+      spaces.find{|space| space.column == column && space.row == row}
+    end
+
   end
 
   class Strategy

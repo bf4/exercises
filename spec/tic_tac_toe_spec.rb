@@ -28,6 +28,14 @@ describe TicTacToe do
       expect(board.spaces.size).to eq(9)
     end
 
+    it 'returns a space for a row and column' do
+      row = 1
+      column = 3
+      space = board.space(row: row, column: column)
+      expect(space.row).to    eq(row)
+      expect(space.column).to eq(column)
+    end
+
     describe TicTacToe::Board::Space do
       let(:column) { 1 }
       let(:row)    { 3 }
