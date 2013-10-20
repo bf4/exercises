@@ -39,5 +39,13 @@ describe TicTacToe do
     end
   end
 
+  describe TicTacToe::Strategy do
+    let(:board)    { TicTacToe::Board.new }
+    let(:strategy) { TicTacToe::Strategy.new(board) }
+    example do
+      strategy
+    end
+
+  end
 
 end

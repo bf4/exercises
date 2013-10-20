@@ -18,6 +18,14 @@ class TicTacToe
 
   end
 
+  class Strategy
+
+    def initialize(board)
+      @board = board
+    end
+
+  end
+
   def start
     true
   end
