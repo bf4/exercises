@@ -54,6 +54,12 @@ describe TicTacToe do
       strategy
     end
 
+    it 'determines the next move' do
+      space = board.space(row: 2, column: 2)
+      expect(strategy.next_move).to eq(space)
+    end
+
+
   end
 
 end

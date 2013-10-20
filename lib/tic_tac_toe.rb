@@ -30,6 +30,10 @@ class TicTacToe
       @board = board
     end
 
+    def next_move
+      @board.space(row: 2, column: 2)
+    end
+
   end
 
   def start
