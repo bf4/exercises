@@ -2,6 +2,10 @@ class TicTacToe
   class Board
     Space = Struct.new(:column, :row) do
 
+      def empty?
+        true
+      end
+
     end
     WIDTH  = 3
     HEIGHT = 3
@@ -20,6 +24,10 @@ class TicTacToe
       row = coords.fetch(:row)
       column = coords.fetch(:column)
       spaces.find{|space| space.column == column && space.row == row}
+    end
+
+    def empty?
+      spaces.all?(&:empty?)
     end
 
   end
