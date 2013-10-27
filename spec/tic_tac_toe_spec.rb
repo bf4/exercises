@@ -104,15 +104,91 @@ describe TicTacToe do
     example do
       strategy
     end
-
     context 'determines the next move' do
-      it 'when the board is empty' do
-        board.empty?
+      context 'on the first turn' do
+      it 'X: the board is empty; take a corner' do
+        expect(board).to be_empty
+        space = board.space(row: 1, column: 1)
+        expect(strategy.next_move('x')).to eq(space)
+      end
+      it "O: when only a corner is taken, take the center" do
+        expect(board).to be_empty
+        expect(board.space(row: 1, column: 1).set('x')).to be_true
         space = board.space(row: 2, column: 2)
-        expect(strategy.next_move).to eq(space)
+        expect(strategy.next_move('o')).to eq(space)
+      end
+    end
+      context 'on the second turn' do
+        it 'X: when O has the middle, take the opposite corner' do
+          expect(board).to be_empty
+          expect(board.space(row: 1, column: 1).set('x')).to be_true
+          expect(board.space(row: 2, column: 2).set('o')).to be_true
+          space = board.space(row: 3, column: 3)
+          expect(strategy.next_move('x')).to eq(space)
+        end
+
+        it 'O: when X has opposite corners, take a middle edge' do
+          expect(board).to be_empty
+          expect(board.space(row: 1, column: 1).set('x')).to be_true
+          expect(board.space(row: 2, column: 2).set('o')).to be_true
+          expect(board.space(row: 3, column: 3).set('x')).to be_true
+
+          expect(strategy.next_move('o')).to eq(board.space(row: 3, column: 2))
+        end
+
+      end
+      context 'on the third turn' do
+        
+
       end
     end
 
+    # count: win in one move? -> win
+    # count: win in two moves with one space?  -> fork -> win
+    # count: win in three moves with one space? ->
+
+def diagonals(board)
+  Matrix.Raise ErrDimensionMismatch unless board.square?
+  lower_bound = 0
+  upper_bound = board.column_size - 1
+  [0, upper_bound].map do |offset|
+    Vector.elements((0..upper_bound).map do |i|
+      column = offset.zero? ? i : offset - i
+      board[i, column]
+    end)
+  end
+end
+def sum_vector(vector)
+  vector.to_a.reduce(&:+)
+end
+# not as immutable as you'd think
+def play(board, player, row, column)
+  board.send(:[]=, row, column, player)
+end
+    it 'determines the winner' do
+      @columns = 3
+      @rows = 3
+      @default = 0
+      @x = 1
+      @o = -1
+      require 'matrix'
+      @board = Matrix.zero(@rows, @columns)
+      columns = @board.column_vectors
+      rows = @board.row_vectors
+      diagonals = diagonals(@board)
+      vector_sets = columns + rows + diagonals
+      scores = vector_sets.map do |vector|
+        sum_vector(vector)
+      end
+      expect(scores.size).to eq(8)
+      expect(scores.uniq.first).to eq(0)
+      play(@board, @x,0,0)
+      expect(sum_vector(@board.column(0))).to eq(1)
+      play(@board, @x,1,0)
+      play(@board, @x,2,0)
+      winner = vector_sets.find{|vector| sum_vector(vector) == 3}
+      expect(winner).to be_nil
+    end
 
   end
 
